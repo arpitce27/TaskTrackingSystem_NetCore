@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SampleWebApp.Models.OrganizationViewModels
+@model OrganizationUserModel
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @Html.AntiForgeryToken()
+
+        <h3>Welcom To <b>@Model.OrganizationName.ToUpper()</b></h3>
+        <p class="lead">Here are the options for Administrative user:</p><br />
+        @*<p><a href="@Url.Action("Index", "Role")" class="btn btn-primary btn-lg">Manage User Roles</a></p><br />*@
+        <p><a href="@Url.Action("Organizations", "Administrator")" class="btn btn-primary btn-lg">Manage Organizations</a></p><br />
+        @*<p><a href="@Url.Action("", "")" class="btn btn-primary btn-lg"></a></p><br />*@
+
+    }
+</div>
+

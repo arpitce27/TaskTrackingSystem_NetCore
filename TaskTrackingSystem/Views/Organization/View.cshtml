@@ -1,0 +1,42 @@
+﻿@using SampleWebApp.Models.OrganizationViewModels
+@model OrganizationListDetailModel
+@{ var users = ""; }
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    foreach (var u in Model.Users)
+    {
+        if (u != Model.Manager)
+        {
+            users += u.ToString();
+        }
+    }
+    if (users.Equals(""))
+    {
+        users = "No other users";
+    }
+    users = users.TrimEnd('}');
+}
+<br />
+<br />
+<div>
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading text-uppercase">@Html.DisplayFor(model => model.OrganizationName)</h2>
+                    <h4 class="section-heading"><b>Organization Type</b> : @Html.DisplayFor(model => model.OrganizationType)</h4>
+                    <h4 class="section-heading"><b>Organization Status</b> : @Html.DisplayFor(model => model.Status)</h4>
+                    <hr class="light">
+                    <h4 class="section-heading"><b>Manager</b> : @Html.DisplayFor(model => model.Manager)</h4>
+                    <h4 class="section-heading"><b>Users</b> : @users</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+@*<div>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        <a asp-action="Index">Back to List</a>
+    </div>*@

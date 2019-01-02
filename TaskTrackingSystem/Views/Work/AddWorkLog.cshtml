@@ -1,0 +1,73 @@
+﻿@using  SampleWebApp.Models.WorkLogViewModels
+@model WorkLogCreateViewModel
+
+@{
+    ViewData["Title"] = "AddWorkLog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron">
+    <h2 class="text-uppercase">@Model.work.Title</h2>
+    <h5 class="section-heading"><b>Work Due </b> : @Model.DeadLine</h5>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddWorkLog">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="LogDate" class="control-label"></label>
+                    <input asp-for="LogDate" class="form-control" type="date" />
+                    <span asp-validation-for="LogDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StartTime" class="control-label"></label>
+                    <input asp-for="StartTime" class="form-control" type="time" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndTime" class="control-label"></label>
+                    <input asp-for="EndTime" class="form-control" type="time" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Add Log" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6 col-md-offset-2">
+            @*<h5 class="section-heading"><b>Work Due </b> : @Model.DeadLine</h5>
+                <h5 class="section-heading"><b>Hours Worked By You </b> : @Model.AlreadySpent</h5>
+                @if (Model.PreviousWorkLogs.Count() > 0)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Log Date</th>
+                                <th>Hours Worked</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var log in Model.PreviousWorkLogs)
+                            {
+                                <tr>
+                                    <td>@log.CreatedDate</td>
+                                    <td>@log.TimeSpent</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <label>No Previous Logs Found!</label>
+                }*@
+        </div>
+    </div>
+
+</div>
+<div>
+    <a asp-action="AllWork">Back to List</a>
+</div>
+

@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SampleWebApp.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (User.IsInRole("Administrator"))
+{
+    <li><a asp-area="" asp-controller="Administrator" asp-action="Index">Home</a></li>
+    <li><a asp-area="" asp-controller="Administrator" asp-action="Organizations">All Organization</a></li>
+}
+else if (User.IsInRole("Manager"))
+{
+    <li><a asp-area="" asp-controller="Manager" asp-action="Index">Home</a></li>
+    <li><a asp-area="" asp-controller="Manager" asp-action="MyUsers">My Users</a></li>
+}
+else if (User.IsInRole("ITUser"))
+{
+    <li><a asp-area="" asp-controller="ITUser" asp-action="Index">Home</a></li>
+    <li><a asp-area="" asp-controller="Work" asp-action="AllWork">My Assignments</a></li>
+}
+else
+{
+    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+}

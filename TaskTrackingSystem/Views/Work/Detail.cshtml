@@ -1,0 +1,108 @@
+﻿@using  SampleWebApp.Models.WorkViewModels
+@model WorkDetailViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ var assignedUsers = ""; }
+@if (Model.Assignments.Count() > 0)
+{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    foreach (var u in Model.Assignments)
+    {
+        assignedUsers += u.User.FullName + ", ";
+    }
+    assignedUsers = assignedUsers.Trim(new char[] { ' ', ',' });
+}
+else
+{
+    assignedUsers = "Not yet assigned";
+}
+
+<div class="jumbotron">
+    <h2>@Model.OrganizationName</h2>
+    <hr />
+
+    <div>
+        <section class="bg-primary" id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 text-center">
+                        <h2 class="section-heading text-uppercase">@Model.Title (@Model.WorkType.Type)</h2>
+                        <h4 class="section-heading">@Html.DisplayFor(model => model.Description)</h4>
+                        <hr class="light">
+                        <h4 class="section-heading"><b>Priority </b> : @Model.Priority</h4>
+                        <h4 class="section-heading"><b>Status </b> : @Model.Status</h4>
+                        <h4 class="section-heading"><b>CreatedOn </b> : @Model.CreatedOn.ToShortDateString()</h4>
+                        <h4 class="section-heading"><b>Deadline </b> : @Model.Deadline.ToShortDateString()</h4>
+                        <h4 class="section-heading"><b>Assignments </b> : @assignedUsers</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <br />
+    <div>
+        @if (ViewBag.UserRole.Equals("Manager"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <br />
+        }
+        else if (ViewBag.UserRole.Equals("ITUser"))
+        {
+            @Html.ActionLink("Add Work Logs", "AddWorkLog", new { id = Model.Id }) <br />
+        }
+        <a asp-action="AllWork">Back to List</a>
+    </div>
+</div>
+
+@Html.Partial("AddComment", Model.CommentCreate)
+
+<div class="page-header"><h4><b>Comments of this work</b></h4></div>
+<div class="container">
+    @if (Model.Comments.Count() > 0)
+    {
+        DateTime date2 = DateTime.Now;
+        foreach (var com in Model.Comments.ToList())
+        {
+            TimeSpan timeDifference = date2.Subtract(com.PostTime);
+            var timePassed = timeDifference.Days.ToString() + " Days Ago";
+            if (timeDifference.Days < 1)
+            {
+                timePassed = timeDifference.Minutes.ToString() + " Hours Ago";
+            }
+            if (timeDifference.Hours < 1)
+            {
+                timePassed = timeDifference.Minutes.ToString() + " Minutes Ago";
+            }
+            if (timeDifference.Minutes < 1)
+            {
+                timePassed = timeDifference.Seconds + " Seconds Ago";
+            }
+            <div class="media">
+                <a class="pull-left" href="#">
+                    <img class="media-object" src="http://placehold.it/64x64" alt="">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        @com.User.FullName
+                        <small>@timePassed</small>
+                    </h4>
+                    @com.Content
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No Comments</p>
+
+    }
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

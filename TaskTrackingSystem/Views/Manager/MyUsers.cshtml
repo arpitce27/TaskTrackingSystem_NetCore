@@ -1,0 +1,60 @@
+﻿@using SampleWebApp.Models.OrganizationViewModels
+@model OrganizationUserListModel
+
+@{
+    ViewData["Title"] = "My Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Organization Users</h2>
+<p>
+    <a asp-action="AddUser">Add New</a>
+</p>
+@if (Model.Users.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    User Name
+                </th>
+                <th>
+                    Email Address
+                </th>
+                <th>
+                    User Role
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Users)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserRole)
+                    </td>
+                    @*<td>
+                        <b><u>@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })</u></b>
+                    </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{ 
+    <p>No Users Found !</p>
+}

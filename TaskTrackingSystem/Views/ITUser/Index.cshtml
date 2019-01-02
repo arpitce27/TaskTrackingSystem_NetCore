@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SampleWebApp.Models.OrganizationViewModels
+@model OrganizationUserModel
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @Html.AntiForgeryToken()
+
+        <h3>Welcome to <b>@Model.OrganizationName.ToUpper()</b></h3>
+
+        <p class="lead">Here are the options for Users area:</p><br />
+        <p><a href="@Url.Action("AllWork", "Work")" class="btn btn-primary btn-lg">Assigned Tasks</a></p><br />
+        @*<p><a href="@Url.Action("AllWorkLogs", "Work")" class="btn btn-primary btn-lg">List of Work Logs</a></p><br />*@
+        <p><a href="@Url.Action("AllWork", "Work", new { status = WorkStatus.Completed })" class="btn btn-primary btn-lg">View Completed Works</a></p><br />
+    }
+</div>

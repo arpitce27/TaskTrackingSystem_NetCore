@@ -1,0 +1,98 @@
+﻿@using SampleWebApp.Models.WorkViewModels
+@model WorkListViewModel
+
+@{
+    ViewData["Title"] = "AllWork";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="jumbotron">
+    <h2>All Work</h2>
+    <hr />
+    @if (ViewBag.UserRole.Equals("Manager"))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+
+    <p>
+        <a class="small" href="@Url.Action("AllWork", "Work")">Back to List  </a>
+        @if (Model.WorkTypes.Count > 2)
+        { 
+            @foreach (var type in Model.WorkTypes)
+            {
+                <a class="small" href="@Url.Action("AllWork", "Work", new { workType = type.Type})">|  @type.Type</a>
+            }
+        }
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Work Type</th>
+                <th><a href="@Url.Action("AllWork", "Work", new { workType = ViewBag.workType, shortBy = "PriorityShort" + ViewBag.PriorityShort })"><u>Priority</u></a></th>
+                <th><a href="@Url.Action("AllWork", "Work", new { workType = ViewBag.workType, shortBy = "Status" + ViewBag.Status })"><u>Status</u></a></th>
+                <th><a href="@Url.Action("AllWork", "Work", new { workType = ViewBag.workType, shortBy = "CreatedOn" + ViewBag.CreatedOn })"><u>CreatedOn</u></a></th>
+                <th><a href="@Url.Action("AllWork", "Work", new { workType = ViewBag.workType, shortBy = "Deadline" + ViewBag.Deadline })"><u>Deadline</u></a></th>
+                <th>Assigned To</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Works.Count() > 0)
+            {
+                @foreach (var item in Model.Works)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.WorkType.Type</td>
+                        <td>@item.Priority</td>
+                        <td>@item.Status</td>
+                        <td>@item.CreatedOn.ToShortDateString()</td>
+                        <td>@item.Deadline.ToShortDateString()</td>
+
+                        @if (item.AssignedUsers.Count() > 0)
+                        {
+                            <td>
+                                @foreach (var u in item.AssignedUsers)
+                                {
+                                    @Html.Raw(u) <br />
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td> - </td>
+                        }
+                        @if (ViewBag.UserRole.Equals("Manager"))
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Details", "Detail", new { id = item.Id })
+                                @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                            </td>
+                        }
+                        else if (ViewBag.UserRole.Equals("ITUser"))
+                        {
+                            <td class="text-center">
+
+                                @if (item.Status != WorkStatus.Completed)
+                                {
+                                    @Html.ActionLink("Details", "Detail", new { id = item.Id }) @Html.Raw(" | ")
+                                    @Html.ActionLink("AddLog", "AddWorkLog", new { id = item.Id }) @Html.Raw(" | ")
+                                    @Html.ActionLink("Mark As Completed", "MarkCompleted", new { id = item.Id })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Details", "Detail", new { id = item.Id })
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>

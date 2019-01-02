@@ -1,0 +1,52 @@
+﻿@using SampleWebApp.Models.OrganizationViewModels
+@model OrganizationListModel
+
+@{
+    ViewData["Title"] = "Organizations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var mod = Model.Organizations;
+}
+
+<h2>Organizations</h2>
+
+@if (Model.Organizations.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Organization Name</th>
+                <th>Organization Type</th>
+                <th>Supervising Manager</th>
+                <th>Users</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in mod)
+            {
+                <tr>
+                    <td>@item.OrganizationName</td>
+                    <td>@item.OrganizationType</td>
+                    <td>@item.Manager</td>
+                    <td>
+                        @foreach (var u in item.Users)
+                        {
+                            @Html.Raw(u) <br />
+                        }
+                    </td>
+                    <td>@item.Status</td>
+                    <td>
+                        <b><u>@Html.ActionLink("Details", "View", "Organization", new { id = item.Id })</u></b>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div> No Organization Found . . .</div>
+}
+
+
